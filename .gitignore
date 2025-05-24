@@ -20,3 +20,4 @@
 !Core/Src/main.c
 
 # code: 用户代码
+!User/**/*

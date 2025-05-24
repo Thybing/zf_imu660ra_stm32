@@ -1,20 +1,20 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * @file           : main.c
-  * @brief          : Main program body
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2025 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file           : main.c
+ * @brief          : Main program body
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2025 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
@@ -25,6 +25,14 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "menu_nest/menu.h"
+#include "menu_nest_tiny/item_page_entrance.h"
+#include "menu_nest_tiny/item_static_variable.h"
+#include "menu_nest_tiny/page_base.h"
+
+#include "imu660ra/zf_device_imu660ra.h"
+
+#include "ssd1306/ssd1306.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -56,6 +64,10 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void menu_init() {
+    MN_page *p_main_page = create_base_page("mainPage");
+    MN_menu_init(p_main_page);
+}
 
 /* USER CODE END 0 */
 
@@ -91,17 +103,42 @@ int main(void)
   MX_TIM2_Init();
   MX_I2C2_Init();
   /* USER CODE BEGIN 2 */
+    menu_init();      // 初始化菜单
+    ssd1306_Init();       // 初始化OLED
+    ssd1306_Fill(Black);  // 清屏
+    imu660ra_init();
+
+    /*使能定时器中断*/
+    // HAL_TIM_Base_Start_IT(&htim2);  // 用来处理按键的定时器
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
+    imu660ra_measurement_data_struct gyro_data = {0};
+    imu660ra_physical_data_struct gyro_phy_data = {0};
+
+    MN_item *p_var_gyro_x = create_item_static_variable("gyro_x", &gyro_phy_data.x, TYPE_F32);
+    MN_item *p_var_gyro_y = create_item_static_variable("gyro_y", &gyro_phy_data.y, TYPE_F32);
+    MN_item *p_var_gyro_z = create_item_static_variable("gyro_z", &gyro_phy_data.z, TYPE_F32);
+    int i = 0;
+    MN_item *p_i = create_item_static_variable("i", &i, TYPE_I32);
+    MN_page *p_main_page = MN_get_main_page();
+    MN_page_add_item(p_main_page, p_var_gyro_x);
+    MN_page_add_item(p_main_page, p_var_gyro_y);
+    MN_page_add_item(p_main_page, p_var_gyro_z);
+    MN_page_add_item(p_main_page, p_i);
+
+    while (1) {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  }
+        imu660ra_get_gyro(&gyro_data);
+        imu660ra_get_physical_gyro(&gyro_data, IMU660RA_GYRO_RANGE_SGN_2000DPS, &gyro_phy_data);
+        MN_menu_handle_input_queue();  // 处理菜单的输入队列
+        MN_menu_rendering();           // 渲染菜单
+        HAL_Delay(100);
+    }
   /* USER CODE END 3 */
 }
 
@@ -144,7 +181,9 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+    static unsigned char ledState = 0;
+}
 /* USER CODE END 4 */
 
 /**
@@ -154,11 +193,10 @@ void SystemClock_Config(void)
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
-  /* User can add his own implementation to report the HAL error return state */
-  __disable_irq();
-  while (1)
-  {
-  }
+    /* User can add his own implementation to report the HAL error return state */
+    __disable_irq();
+    while (1) {
+    }
   /* USER CODE END Error_Handler_Debug */
 }
 
@@ -173,8 +211,8 @@ void Error_Handler(void)
 void assert_failed(uint8_t *file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+    /* User can add his own implementation to report the file name and line number,
+       ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
