@@ -4,10 +4,11 @@
 *
 !**/
 
-
-# for git
+# common
 !.gitignore
 !.gitkeep
+!Readme.md
+!LICENSE
 
 # for STM32CubeMX
 !F103ZET6.ioc

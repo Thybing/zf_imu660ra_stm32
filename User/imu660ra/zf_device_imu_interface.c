@@ -36,12 +36,10 @@
  * 就可以直接适配 SeekFree 所有的 V4 库 IMU 器件
  ********************************************************************************************************************/
 
-// 自身头文件
 #include "imu660ra/zf_device_imu_interface.h"
 #include "soft_iic/zf_driver_soft_iic.h"
 
 #include <assert.h>
-
 
 soft_iic_info_struct imu_soft_iic_obj;
 
@@ -82,7 +80,6 @@ void imu_delay_ms(uint32_t ms) {
 // 备注信息
 //-------------------------------------------------------------------------------------------------------------------
 uint8_t imu_assert(uint8_t pass, char *str, char *file, int line) {
-    // return (pass ? ZF_NO_ERROR : debug_message_handler(ZF_DEBUG_OUTPUT_LEVEL_DEVICE, (pass), (str), file, line));
     if (!pass) {
         for(;;);
     }

@@ -51,6 +51,7 @@
 #define IMU_INTERFACE_SOFT_IIC (1)  // 使用软件 IIC 方式驱动
 #define IMU_INTERFACE_IIC (2)       // 使用硬件 IIC 方式驱动
 
+// 目前支持硬件和软件的IIC。如果有SPI需求请自行修改。
 #define IMU_INTERFACE_TYPE IMU_INTERFACE_SOFT_IIC
 
 #define IMU_SPI_INDEX (SPI_FOR_IMU_INST)
