@@ -1,0 +1,22 @@
+# 这是一个反向的.gitignore，仅仅保留重构项目必要的文件。
+
+# 忽略所有文件，但不忽略文件夹
+*
+!**/
+
+
+# for git
+!.gitignore
+!.gitkeep
+
+# for STM32CubeMX
+!F103ZET6.ioc
+
+# for MDK-ARM (Keil)
+!MDK-ARM/F103ZET6.uvprojx
+!MDK-ARM/F103ZET6.uvoptx
+
+# code: STM32CubeMX生成的文件中需要修改的文件
+!Core/Src/main.c
+
+# code: 用户代码
