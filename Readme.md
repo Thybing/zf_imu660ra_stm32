@@ -19,11 +19,12 @@
 **MSPM0G3507 Opensourec Library (SEEKFREE 逐飞科技)**
 User/imu660ra/和User/soft_iic/由该库修改得到
 项目原地址暂时未知，代码来源2024年电赛省赛时逐飞科技群的开源。
+修改前的文件放到Other/SEEKFREE_IMU660_963中供参考。
 
 ### 本项目使用了以下 MIT 授权的第三方库：
 
 **[MenuNest](https://github.com/Thybing/MenuNest)**
-之前写的菜单框架，该项目中用于展示数据。
+之前写的菜单框架，该项目中用于展示数据。位于User/menu_nest_lib
 
 **[stm32-ssd1306](https://github.com/afiskon/stm32-ssd1306)**
 接入菜单框架中的ssd1306驱动。位于User/ssd1306

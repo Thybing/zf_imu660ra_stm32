@@ -22,3 +22,6 @@
 
 # code: 用户代码
 !User/**/*
+
+# Other
+!Other/SEEKFREE_IMU660_963/**
