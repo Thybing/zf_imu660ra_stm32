@@ -104,7 +104,6 @@ int main(void) {
     menu_init();          // 初始化菜单
     ssd1306_Init();       // 初始化OLED
     ssd1306_Fill(Black);  // 清屏
-    imu660ra_init();
     init_attitude(&attitude_module, 0.005f);
 
     HAL_TIM_Base_Start_IT(&htim2);

@@ -39,12 +39,12 @@
 #include "stm32f1xx_hal.h"
 
 typedef struct {
-    GPIO_TypeDef * SCL_GPIOx;
+    GPIO_TypeDef *SCL_GPIOx;
     uint16_t SCL_GPIO_Pin;
-    GPIO_TypeDef * SDA_GPIOx;
+    GPIO_TypeDef *SDA_GPIOx;
     uint16_t SDA_GPIO_Pin;
-    uint8_t addr;      // 器件地址 七位地址模式
-    uint32_t delay;    // 模拟 IIC 软延时时长
+    uint8_t addr;    // 器件地址 七位地址模式
+    uint32_t delay;  // 模拟 IIC 软延时时长
 } soft_iic_info_struct;
 
 void soft_iic_write_8bit(soft_iic_info_struct *soft_iic_obj, const uint8_t data);
@@ -84,7 +84,7 @@ void soft_iic_transfer_16bit_array(soft_iic_info_struct *soft_iic_obj, const uin
 void soft_iic_sccb_write_register(soft_iic_info_struct *soft_iic_obj, const uint8_t register_name, uint8_t data);
 uint8_t soft_iic_sccb_read_register(soft_iic_info_struct *soft_iic_obj, const uint8_t register_name);
 
-void soft_iic_init(soft_iic_info_struct *soft_iic_obj, uint8_t addr, uint32_t delay, GPIO_TypeDef *SDA_GPIOx,
-                   uint16_t SDA_GPIO_Pin, GPIO_TypeDef *SCL_GPIOx, uint16_t SCL_GPIO_Pin);
+void soft_iic_init(soft_iic_info_struct *soft_iic_obj, uint8_t addr, uint32_t delay, GPIO_TypeDef *SCL_GPIOx,
+                   uint16_t SCL_GPIO_Pin, GPIO_TypeDef *SDA_GPIOx, uint16_t SDA_GPIO_Pin);
 
 #endif

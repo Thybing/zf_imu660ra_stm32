@@ -787,6 +787,7 @@ imu963ra_state_enum imu963ra_set_config (imu963ra_config_item_enum item)
 //-------------------------------------------------------------------------------------------------------------------
 imu963ra_state_enum imu963ra_init (void)
 {
+    soft_iic_init(&imu_soft_iic_obj, IMU963RA_DEV_ADDR, 20, GPIOA, GPIO_PIN_8, GPIOA, GPIO_PIN_9);
     imu963ra_state_enum return_state = IMU963RA_STATE_NO_ERROR;
     imu_delay_ms(50);                                                           // 等待设备上电成功
     do{

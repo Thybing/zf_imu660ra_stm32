@@ -609,6 +609,11 @@
               <FileType>1</FileType>
               <FilePath>..\User\menu_nest_lib\src\menu_nest_tiny\page_hibernate.c</FilePath>
             </File>
+            <File>
+              <FileName>zf_device_imu963ra.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\imu660ra\zf_device_imu963ra.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

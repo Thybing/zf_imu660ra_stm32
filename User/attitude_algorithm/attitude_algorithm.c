@@ -17,21 +17,39 @@ void gyro_error_correct(Attitude_module* attitude_module) {
 }
 
 void get_acc(Attitude_module* attitude_module) {
+#ifdef USE_IMU660RA
     imu660ra_get_acc(&(attitude_module->acc_measurement_data));
     imu660ra_get_physical_acc(&(attitude_module->acc_measurement_data), IMU660RA_ACC_RANGE_DEFAULT,
                               &(attitude_module->acc_physical_data));
     attitude_module->attitude_data.acc_x = attitude_module->acc_physical_data.x * 980.0f;
     attitude_module->attitude_data.acc_y = attitude_module->acc_physical_data.y * 980.0f;
     attitude_module->attitude_data.acc_z = attitude_module->acc_physical_data.z * 980.0f;
+#elif defined(USE_IMU963RA)
+    imu963ra_get_acc(&(attitude_module->acc_measurement_data));
+    imu963ra_get_physical_acc(&(attitude_module->acc_measurement_data), IMU963RA_ACC_RANGE_DEFAULT,
+                              &(attitude_module->acc_physical_data));
+    attitude_module->attitude_data.acc_x = attitude_module->acc_physical_data.y * 980.0f;
+    attitude_module->attitude_data.acc_y = -attitude_module->acc_physical_data.x * 980.0f;
+    attitude_module->attitude_data.acc_z = attitude_module->acc_physical_data.z * 980.0f;
+#endif
 }
 
 void get_gyro(Attitude_module* attitude_module) {
+#ifdef USE_IMU660RA
     imu660ra_get_gyro(&(attitude_module->gyro_measurement_data));
     imu660ra_get_physical_gyro(&(attitude_module->gyro_measurement_data), IMU660RA_GYRO_RANGE_DEFAULT,
-                              &(attitude_module->gyro_physical_data));
+                               &(attitude_module->gyro_physical_data));
     attitude_module->attitude_data.gyro_x = attitude_module->gyro_physical_data.x;
     attitude_module->attitude_data.gyro_y = attitude_module->gyro_physical_data.y;
     attitude_module->attitude_data.gyro_z = attitude_module->gyro_physical_data.z;
+#elif defined(USE_IMU963RA)
+    imu963ra_get_gyro(&(attitude_module->gyro_measurement_data));
+    imu963ra_get_physical_gyro(&(attitude_module->gyro_measurement_data), IMU963RA_GYRO_RANGE_DEFAULT,
+                               &(attitude_module->gyro_physical_data));
+    attitude_module->attitude_data.gyro_x = attitude_module->gyro_physical_data.y;
+    attitude_module->attitude_data.gyro_y = -attitude_module->gyro_physical_data.x;
+    attitude_module->attitude_data.gyro_z = attitude_module->gyro_physical_data.z;
+#endif
 
     if (attitude_module->is_init) {
         gyro_error_correct(attitude_module);
@@ -56,7 +74,11 @@ void calc_gyro_zero_drift(Attitude_module* attitude_module) {
 // Outer Func
 
 void init_attitude(Attitude_module* attitude_module, float sampling_period) {
+#ifdef USE_IMU660RA
     imu660ra_init();
+#elif defined(USE_IMU963RA)
+    imu963ra_init();
+#endif
 
     attitude_module->is_init = false;
 
