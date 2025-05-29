@@ -6,8 +6,8 @@
 #include "pose.h"
 
 // choose one
-// #define USE_IMU660RA
-#define USE_IMU963RA
+#define USE_IMU660RA
+// #define USE_IMU963RA
 
 #ifdef USE_IMU660RA
 #include "imu660ra/zf_device_imu660ra.h"
